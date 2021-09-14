@@ -8,7 +8,7 @@ edition = "2018"
 [dependencies]
 anyhow = "*"
 # sarus = {git = "https://github.com/DGriffin91/sarus", branch = "main"}
-sarus = {path = "../sarus"}
+sarus = {git = "https://github.com/geom3trik/cranelift-jit-experiment", branch = "main"}
 hound = "*"
 tuix = {git = "https://github.com/geom3trik/tuix", branch = "reactive"}
 femtovg = { git = "https://github.com/femtovg/femtovg", branch = "master" }

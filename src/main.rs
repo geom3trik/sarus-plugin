@@ -42,6 +42,10 @@ fn main() -> anyhow::Result<()> {
 fn main(a) -> (b) {
     b = 0.05 * a
 }
+
+fn quiet(a) -> (b) {
+    b = 0.05 * a
+} 
 "#;
 
     // Run string with jit instance.
