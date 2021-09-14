@@ -355,6 +355,8 @@ impl Widget for InputSocket {
 
         // let origin = state.data.get_origin(entity);
         let mut transform = state.data.get_transform(entity);
+
+        let transform = Transform2D::identity();
         
         // canvas.translate(origin.0, origin.1);
         // canvas.set_transform(transform[0], transform[1], transform[2], transform[3], transform[4], transform[5]);
@@ -374,11 +376,11 @@ impl Widget for InputSocket {
                 path.bezier_to(sx - mid_x, py, px + mid_x, sy, sx, sy);
                 //path.line_to(sx, sy);
             } else {
-                
-                //transform.inverse();
-                //let (mx, my) = transform.transform_point(state.mouse.cursorx, state.mouse.cursory);
-                let mid_x = (state.mouse.cursorx - px) / 2.0;
-                path.bezier_to(state.mouse.cursorx - mid_x, py, px + mid_x, state.mouse.cursory, state.mouse.cursorx, state.mouse.cursory);
+                let mut transform = state.data.get_transform(entity);
+                transform.inverse();
+                let (mx, my) = transform.transform_point(state.mouse.cursorx, state.mouse.cursory);
+                let mid_x = (mx - px) / 2.0;
+                path.bezier_to(mx - mid_x, py, px + mid_x, my, mx, my);
                 //path.line_to(state.mouse.cursorx, state.mouse.cursory);
             }
             let mut paint = Paint::color(femtovg::Color::rgb(200, 200, 200));
@@ -629,7 +631,8 @@ impl Widget for OutputSocket {
 
         if self.connecting {
 
-            let transform = state.data.get_transform(entity);
+            
+            let transform = Transform2D::identity();
             let (px, py) = transform.transform_point(bounds.x + bounds.w / 2.0, bounds.y + bounds.h / 2.0);
 
             let mut path = Path::new();
@@ -645,11 +648,11 @@ impl Widget for OutputSocket {
                 canvas.stroke_path(&mut path, paint);
 
             } else {
-                
-                //transform.inverse();
-                //let (mx, my) = transform.transform_point(state.mouse.cursorx, state.mouse.cursory);
-                let mid_x = (state.mouse.cursorx - px) / 2.0;
-                path.bezier_to(state.mouse.cursorx - mid_x, py, px + mid_x, state.mouse.cursory, state.mouse.cursorx, state.mouse.cursory);
+                let mut transform = state.data.get_transform(entity);
+                transform.inverse();
+                let (mx, my) = transform.transform_point(state.mouse.cursorx, state.mouse.cursory);
+                let mid_x = (mx - px) / 2.0;
+                path.bezier_to(mx - mid_x, py, px + mid_x, my, mx, my);
                 //path.line_to(state.mouse.cursorx, state.mouse.cursory);
                 let mut paint = Paint::color(femtovg::Color::rgb(200, 200, 200));
                 paint.set_line_width(2.0);
