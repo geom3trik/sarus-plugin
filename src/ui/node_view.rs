@@ -45,7 +45,7 @@ impl Widget for NodeView {
             builder
                 .set_clip_widget(entity)
                 .set_hoverable(false)
-            //.set_background_color(Color::rgb(50,50,200))
+                //.set_background_color(Color::rgb(50,50,200))
         );
 
 

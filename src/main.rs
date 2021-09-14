@@ -47,8 +47,8 @@ fn const_10() -> (b) {
     b = 10.0
 } 
 
-fn tan_node(a) -> (b) {
-    b = tan(a)
+fn tanh_node(a) -> (b) {
+    b = tanh(a)
 }
 
 fn sin_node(a) -> (b) {
