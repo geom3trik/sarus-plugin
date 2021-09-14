@@ -43,9 +43,30 @@ fn main(a) -> (b) {
     b = 0.05 * a
 }
 
-fn quiet(a) -> (b) {
-    b = 0.05 * a
+fn const_10() -> (b) {
+    b = 10.0
 } 
+
+fn tan_node(a) -> (b) {
+    b = tan(a)
+}
+
+fn sin_node(a) -> (b) {
+    b = sin(a)
+}
+
+fn const_01() -> (b) {
+    b = 0.1
+}
+
+fn mul_node(a, b) -> (c) {
+    c = a * b
+}
+
+fn add_node(a, b) -> (c) {
+    c = a + b
+}
+
 "#;
 
     // Run string with jit instance.

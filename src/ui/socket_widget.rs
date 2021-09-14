@@ -33,8 +33,8 @@ impl Widget for ConnectionWidget {
 
             let transform = state.data.get_transform(entity);
             
-            canvas.save();
-            canvas.set_transform(transform[0], transform[1], transform[2], transform[3], transform[4], transform[5]);
+            //canvas.save();
+            //canvas.set_transform(transform[0], transform[1], transform[2], transform[3], transform[4], transform[5]);
 
             let input_bounds = state.data.get_bounds(self.input_socket);
             let output_bounds = state.data.get_bounds(self.output_socket);
@@ -46,7 +46,7 @@ impl Widget for ConnectionWidget {
             let mut paint = Paint::color(femtovg::Color::rgb(200, 200, 200));
             paint.set_line_width(2.0);
             canvas.stroke_path(&mut path, paint);
-            canvas.restore();
+            //canvas.restore();
         }
     }
 
