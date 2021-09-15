@@ -43,9 +43,25 @@ fn main(a) -> (b) {
     b = 0.05 * a
 }
 
-fn const_10() -> (b) {
-    b = 10.0
+fn note_A() -> (b) {
+    b = 440.0
 } 
+
+fn note_Cs() -> (b) {
+    b = 554.37
+} 
+
+fn note_E() -> (b) {
+    b = 659.25
+} 
+
+fn double(a) -> (b) {
+    b = 2.0 * a
+}
+
+fn divide_three(a) -> (b) {
+    b = a / 3.0
+}
 
 fn tanh_node(a) -> (b) {
     b = tanh(a)
@@ -56,7 +72,7 @@ fn sin_node(a) -> (b) {
 }
 
 fn const_01() -> (b) {
-    b = 0.1
+    b = 0.0001
 }
 
 fn mul_node(a, b) -> (c) {
@@ -65,6 +81,10 @@ fn mul_node(a, b) -> (c) {
 
 fn add_node(a, b) -> (c) {
     c = a + b
+}
+
+fn sine_wave(n, f) -> (a) {
+    a = sin(2.0 * 3.1415926 * f * (n / 48000.0))
 }
 
 "#;

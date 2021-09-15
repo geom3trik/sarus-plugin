@@ -90,6 +90,12 @@ impl NodeApp {
                 port_defaults: vec![0.0],
                 position: (0.0, 0.0),
             },
+            Node {
+                func_name: "COUNTER".to_string(),
+                id: "COUNTER".to_string(),
+                port_defaults: vec![0.0],
+                position: (0.0, 0.0),
+            },
         ];
 
         let connections = vec![
@@ -124,6 +130,8 @@ impl NodeApp {
                 "INPUT".to_string()
             } else if node_desc.name == "OUTPUT" {
                 "OUTPUT".to_string()
+            } else if node_desc.name == "COUNTER" {
+                "COUNTER".to_string()
             } else {
                 node_desc.entity.to_string()
             };
@@ -164,19 +172,21 @@ impl NodeApp {
             println!("{}", d);
         }
 
-        const STEPS: usize = 48000 / STEP_SIZE;
-        let mut output_arr = [[0.0f64; STEP_SIZE]; STEPS];
+        const STEPS: usize = 5 * 48000 / STEP_SIZE;
+        //let mut output_arr = [[0.0f64; STEP_SIZE]; STEPS];
+        let mut output_arr = vec![vec![0.0f64; STEP_SIZE]; STEPS];
         let mut n = 0;
+        let mut step_count = 0;
         for i in 0..STEPS {
             let mut audio_buffer = [0.0f64; STEP_SIZE];
+            let count = n;
             for j in 0..STEP_SIZE {
                 audio_buffer[j] = ((n as f64).powi(2) * 0.000001).sin(); //sound source is sine sweep
                 n += 1;
             }
-            unsafe { run_fn(&mut self.graph.jit, "graph", &mut audio_buffer)?};
-    
+            unsafe { run_fn(&mut self.graph.jit, "graph", (&mut audio_buffer, count as f64))?}; 
             //Collect output audio
-            output_arr[i] = audio_buffer;
+            output_arr[i] = audio_buffer.to_vec();
         }
 
         //Flatten output audio chunks for saving as wav
@@ -251,9 +261,44 @@ impl Widget for NodeApp {
                 .set_child_space(Stretch(1.0))
         );
 
-        
-
         Label::new("src").build(state, row, |builder| 
+            builder
+                .set_child_space(Stretch(1.0))
+                .set_child_right(Pixels(5.0))
+                .set_space(Pixels(0.0))
+                .set_hoverable(false)
+        );
+
+        let src_socket = OutputSocket::new().build(state, row, |builder| 
+            builder
+                .set_left(Stretch(0.0))
+                .set_right(Pixels(-10.0))
+        );
+
+        node_desc2.outputs.push(src_socket);
+
+        self.nodes.push(node_desc2);
+
+        let node = NodeWidget::new("COUNTER").build(state, self.node_view, |builder| 
+            builder
+                .set_left(Pixels(100.0))
+                .set_top(Pixels(400.0))
+        );
+
+        let mut node_desc2 = NodeDesc2 {
+            entity: node,
+            name: "COUNTER".to_string(),
+            inputs: Vec::new(),
+            outputs: Vec::new(),
+        };
+
+        let row = Row::new().build(state, node, |builder| 
+            builder
+                .set_height(Pixels(30.0))
+                .set_child_space(Stretch(1.0))
+        );
+
+        Label::new("n").build(state, row, |builder| 
             builder
                 .set_child_space(Stretch(1.0))
                 .set_child_right(Pixels(5.0))
@@ -294,7 +339,7 @@ impl Widget for NodeApp {
                 .set_child_space(Stretch(1.0))
         );
 
-        let input_socket = InputSocket::new().build(state, row, |builder| 
+        let dst_socket = InputSocket::new().build(state, row, |builder| 
             builder
                 .set_left(Pixels(-10.0))
                 .set_right(Stretch(0.0))
@@ -308,12 +353,12 @@ impl Widget for NodeApp {
                 .set_hoverable(false)
         );
 
-        node_desc2.inputs.push(input_socket);
+        node_desc2.inputs.push(dst_socket);
 
         self.nodes.push(node_desc2);
 
 
-        input_socket.emit_to(state, output_socket, NodeEvent::ConnectInput);
+        dst_socket.emit_to(state, src_socket, NodeEvent::ConnectInput);
 
 
         self.node_view

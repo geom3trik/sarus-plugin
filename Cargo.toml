@@ -9,6 +9,7 @@ edition = "2018"
 anyhow = "*"
 # sarus = {git = "https://github.com/DGriffin91/sarus", branch = "main"}
 sarus = {git = "https://github.com/geom3trik/cranelift-jit-experiment", branch = "main"}
+# sarus = {path = "../sarus"}
 hound = "*"
 tuix = {git = "https://github.com/geom3trik/tuix", branch = "color_picker"}
 # tuix = {path = "../tuix"}
