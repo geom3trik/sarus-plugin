@@ -453,7 +453,7 @@ impl Widget for NodeApp {
         if let Some(window_event) = event.message.downcast() {
             match window_event {
                 WindowEvent::MouseUp(button) if *button == MouseButton::Right => {
-                    entity.emit_to(state, self.menu, PopupEvent::OpenAtCursor);
+                    self.menu.emit(state, PopupEvent::OpenAtCursor);
                 }
 
                 _=> {}

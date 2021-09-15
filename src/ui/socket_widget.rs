@@ -388,7 +388,22 @@ impl Widget for InputSocket {
             canvas.stroke_path(&mut path, paint);
         }
 
-        //canvas.restore();
+        // For debugging the clip region
+        // canvas.save();
+        // let mut transform = state.data.get_transform(entity);
+        // //let transform = Transform2D::identity();
+        // transform.inverse();
+        // println!("{:?}", transform);
+        // let clip_region = state.data.get_clip_region(entity);
+        // println!("{:?}", clip_region);
+        // let (cx, cy) = transform.transform_point(clip_region.x, clip_region.y);
+        // let (cw, ch) = transform.transform_point(clip_region.x + clip_region.w, clip_region.y + clip_region.h);
+        // let mut path = Path::new();
+        // path.rect(cx, cy, cw - cx, ch - cy);
+        // let mut paint = Paint::color(femtovg::Color::rgb(250, 50, 50));
+        // paint.set_line_width(2.0);
+        // canvas.stroke_path(&mut path, paint);
+        // canvas.restore();
     }
 }
 
