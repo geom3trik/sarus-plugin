@@ -233,6 +233,8 @@ impl Widget for NodeApp {
 
         let node = NodeWidget::new("INPUT").build(state, self.node_view, |builder| 
             builder
+                .set_left(Pixels(100.0))
+                .set_top(Pixels(100.0))
         );
 
         let mut node_desc2 = NodeDesc2 {
@@ -275,6 +277,8 @@ impl Widget for NodeApp {
 
         let node = NodeWidget::new("OUTPUT").build(state, self.node_view, |builder| 
             builder
+                .set_left(Pixels(400.0))
+                .set_top(Pixels(100.0))
         );
 
         let mut node_desc2 = NodeDesc2 {
@@ -346,12 +350,23 @@ impl Widget for NodeApp {
                     if let Some(node_desc) = self.node_descriptions.get(name) {
 
 
+                        let nx = state.data.get_posx(self.node_view);
+                        let ny = state.data.get_posy(self.node_view);
+                        let nw = state.data.get_width(self.node_view);
+                        let nh = state.data.get_height(self.node_view);
+
+                        let mut transform = state.data.get_transform(self.node_view);
+                        transform.inverse();
+
+                        let (x, y) = transform.transform_point(nx + nw / 2.0, ny + nh / 2.0);
                         
 
                         // Create the node from the description
 
                         let node = NodeWidget::new(&name).build(state, self.node_view, |builder| 
                             builder
+                                .set_left(Pixels(x))
+                                .set_top(Pixels(y))
                         );
 
                         let mut node_desc2 = NodeDesc2 {
